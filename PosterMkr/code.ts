@@ -11,6 +11,15 @@ figma.showUI(__html__);
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
+
+async function fontLoader() {
+  try {
+    await figma.loadFontAsync({ family: "Roboto", style: "Regular" })
+  } catch (error) {
+    ;
+  }
+}
+
 figma.ui.onmessage = msg => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
@@ -32,6 +41,7 @@ figma.ui.onmessage = msg => {
 
     var rootframe = figma.createFrame();
     rootframe.rescale(10.8);
+    rootframe.name = "Poster"
 
     // figma.currentPage.appendChild(rootframe);
 
@@ -40,15 +50,39 @@ figma.ui.onmessage = msg => {
     const logo1 = figma.createRectangle();
     logo1.x = 30;
     logo1.y = 30;
+    logo1.name = "College Logo"
     logo1.resize(240, 65);
 
     const logo2 = figma.createRectangle();
     logo2.x = 930;
     logo2.y = 30;
+    logo2.name = "Chapter Logo"
     logo2.resize(120, 85);
+    
+    // fontLoader()
+
+    const officeHeader = figma.createText();
+    officeHeader.layoutAlign = "CENTER"
+    // officeHeader.fontName = { family: "Roboto", style: "Regular" };
+    // officeHeader.characters = "Office of Students’ Welfare"
+    // officeHeader.textAlignHorizontal= "CENTER"
+
+    const detailsFooter = figma.createRectangle();
+    detailsFooter.x = 0;
+    detailsFooter.y = 921;
+    detailsFooter.resize(1080, 96);
+
+    const handleFooter = figma.createRectangle();
+    handleFooter.x = 0;
+    handleFooter.y = 1017;
+    handleFooter.resize(1080, 64);
 
     rootframe.appendChild(logo1)
     rootframe.appendChild(logo2)
+    rootframe.appendChild(officeHeader)
+    rootframe.appendChild(detailsFooter)
+    rootframe.appendChild(handleFooter)
+
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will
