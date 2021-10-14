@@ -13,7 +13,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__);
+figma.showUI(__html__, { width: 300, height: 300 });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
@@ -68,10 +68,12 @@ figma.ui.onmessage = msg => {
         const detailsFooter = figma.createRectangle();
         detailsFooter.x = 0;
         detailsFooter.y = 921;
+        detailsFooter.fills = [{ type: 'SOLID', color: msg.color }];
         detailsFooter.resize(1080, 96);
         const handleFooter = figma.createRectangle();
         handleFooter.x = 0;
         handleFooter.y = 1017;
+        handleFooter.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }];
         handleFooter.resize(1080, 64);
         rootframe.appendChild(logo1);
         rootframe.appendChild(logo2);
