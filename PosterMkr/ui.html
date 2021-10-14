@@ -1,0 +1,86 @@
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    #title {
+      font-size: 24px;
+      color: #3b4247;
+      font-family: 'Poppins', sans-serif;
+      margin: 16px;
+    }
+
+    body {
+      background-color: white;
+    }
+
+    #create {
+      border-radius: 25px;
+      color: white;
+      background-color: #3b4247;
+      font-family: 'Poppins', sans-serif;
+      width: max-content;
+      padding: 4px 8px 4px 8px;
+      /* border: 2px; */
+      border-color: #3b4247;
+    }
+
+    fieldset {
+      color: #3b4247;
+      font-family: 'Poppins', sans-serif;
+      padding: 8px;
+      margin: 8px;
+      border-radius: 8px;
+    }
+
+    #code {
+      margin: 4px, 4px;
+      background-color: rgb(243, 243, 243);
+      width: auto;
+      height: 200px;
+      border-radius: 8px;
+      padding: 16px;
+      color: #3b4247;
+      overflow-x: hidden;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    #code::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    #error_message {
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      color: rgb(255, 124, 124);
+    }
+  </style>
+</head>
+
+
+<center>
+  <p id="title">PosterMkr</p>
+  <br>
+  <button id="create">Create</button>
+</center>
+
+<br>
+
+<center>
+  <p id="error_message"> Made with ❤ </p>
+</center>
+
+<br>
+
+<script>
+
+  document.getElementById('create').onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'create' } }, '*')
+  }
+
+  onmessage = (event) => {
+    ;
+  }
+
+
+</script>
