@@ -17,22 +17,31 @@ figma.showUI(__html__, { width: 300, height: 300 });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-function fontLoader(createText, fontsize, text) {
+function fontLoader(createText, fontsize, text, x = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         yield figma.loadFontAsync({ family: "Roboto", style: "Regular" });
         createText.characters = text;
         createText.textAlignHorizontal = "CENTER";
         createText.layoutAlign = "CENTER";
         createText.fontSize = fontsize;
+        if (x != 0) {
+            createText.x = x;
+            createText.y = 1034;
+        }
     });
 }
-function makeFrame(frame, text, y) {
+function makeFrame(frame, text, y, colored = false, rgb = { r: 1, g: 0.5, b: 0 }) {
     frame.rescale(10.8);
     frame.appendChild(text);
+    frame.opacity = 1;
     frame.name = "autolayout";
     frame.layoutMode = "VERTICAL";
     frame.y = y;
     frame.layoutAlign = "CENTER";
+    console.log(colored);
+    if (colored == true) {
+        frame.fills = [{ type: 'SOLID', color: rgb }];
+    }
 }
 figma.ui.onmessage = msg => {
     // One way of distinguishing between different types of messages sent from
@@ -97,6 +106,10 @@ figma.ui.onmessage = msg => {
         const platform = figma.createText();
         const coord = figma.createText();
         const moreinfo = figma.createText();
+        const gmail = figma.createText();
+        const instagram = figma.createText();
+        const facebook = figma.createText();
+        const linkedin = figma.createText();
         // createText, x, y, fontsize, text  
         fontLoader(officeHeader, 40, 'Office of Students’ Welfare');
         fontLoader(chaptername, 60, 'ISA-VIT');
@@ -109,18 +122,19 @@ figma.ui.onmessage = msg => {
         fontLoader(platform, 30, 'Google Meet');
         fontLoader(coord, 32, 'Student Coordinator Details: Adithya Samal +91 9940726436');
         fontLoader(moreinfo, 32, 'For more information contact: events.sw@vit.ac.in');
+        fontLoader(gmail, 24, 'isa@vit.ac.in', 121);
+        fontLoader(instagram, 24, 'isa_vit_', 402);
+        fontLoader(facebook, 24, 'isavitchapter', 619);
+        fontLoader(linkedin, 24, 'ISA - VIT', 907);
+        rootframe.appendChild(gmail);
+        rootframe.appendChild(instagram);
+        rootframe.appendChild(facebook);
+        rootframe.appendChild(linkedin);
         var officeHeaderFrame = figma.createFrame();
-        officeHeaderFrame.rescale(10.8);
-        officeHeaderFrame.appendChild(officeHeader);
-        officeHeaderFrame.name = "autolayout";
-        officeHeaderFrame.layoutMode = "VERTICAL";
-        officeHeaderFrame.y = 136;
-        officeHeaderFrame.layoutAlign = "CENTER";
         var chapternameFrame = figma.createFrame();
         var technitudeFrame = figma.createFrame();
         var titleFrame = figma.createFrame();
         var speakerFrame = figma.createFrame();
-        var titleFrame = figma.createFrame();
         var dateFrame = figma.createFrame();
         var timeFrame = figma.createFrame();
         var platformFrame = figma.createFrame();
@@ -134,8 +148,8 @@ figma.ui.onmessage = msg => {
         makeFrame(dateFrame, date, 665);
         makeFrame(timeFrame, time, 725);
         makeFrame(platformFrame, platform, 785);
-        makeFrame(coodFrame, coord, 925);
-        makeFrame(moreInfoFrame, moreinfo, 973);
+        makeFrame(coodFrame, coord, 925, true, msg.color);
+        makeFrame(moreInfoFrame, moreinfo, 973, true, msg.color);
         rootframe.appendChild(officeHeaderFrame);
         rootframe.appendChild(chapternameFrame);
         rootframe.appendChild(technitudeFrame);
