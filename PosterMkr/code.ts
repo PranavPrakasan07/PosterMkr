@@ -6,18 +6,22 @@
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, {width:300, height:300});
+figma.showUI(__html__, { width: 300, height: 300 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
 
-async function fontLoader() {
-  try {
-    await figma.loadFontAsync({ family: "Roboto", style: "Regular" })
-  } catch (error) {
-    ;
-  }
+async function fontLoader(officeHeader) {
+    const fonts = officeHeader.getRangeAllFontNames(0, officeHeader.characters.length)
+    for (const font of fonts) {
+      await figma.loadFontAsync(font)
+    }
+
+    officeHeader.layoutAlign = "CENTER"
+    officeHeader.fontName = { family: "Roboto", style: "Regular" };
+    officeHeader.characters = "Office of Students’ Welfare"
+    officeHeader.textAlignHorizontal= "CENTER"
 }
 
 figma.ui.onmessage = msg => {
@@ -59,10 +63,8 @@ figma.ui.onmessage = msg => {
     logo2.name = "Chapter Logo"
     logo2.resize(120, 85);
 
-    // fontLoader()
-
-    const officeHeader = figma.createText();
-    officeHeader.layoutAlign = "CENTER"
+    // fontLoader(officeHeader)
+    // officeHeader.layoutAlign = "CENTER"
     // officeHeader.fontName = { family: "Roboto", style: "Regular" };
     // officeHeader.characters = "Office of Students’ Welfare"
     // officeHeader.textAlignHorizontal= "CENTER"
@@ -70,20 +72,36 @@ figma.ui.onmessage = msg => {
     const detailsFooter = figma.createRectangle();
     detailsFooter.x = 0;
     detailsFooter.y = 921;
+    detailsFooter.name = "Details Footer"
     detailsFooter.fills = [{ type: 'SOLID', color: msg.color }]
     detailsFooter.resize(1080, 96);
 
     const handleFooter = figma.createRectangle();
     handleFooter.x = 0;
     handleFooter.y = 1017;
+    handleFooter.name = "Handle Footer"
     handleFooter.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }]
     handleFooter.resize(1080, 64);
 
     rootframe.appendChild(logo1)
     rootframe.appendChild(logo2)
-    rootframe.appendChild(officeHeader)
     rootframe.appendChild(detailsFooter)
     rootframe.appendChild(handleFooter)
+
+    // const officeHeader = figma.createText();
+
+    // const fonts = officeHeader.getRangeAllFontNames(0, officeHeader.characters.length)
+    // for (const font of fonts) {
+    //   await figma.loadFontAsync(font)
+    // }
+
+    // officeHeader.layoutAlign = "CENTER"
+    // officeHeader.fontName = { family: "Roboto", style: "Regular" };
+    // officeHeader.characters = "Office of Students’ Welfare"
+    // officeHeader.textAlignHorizontal= "CENTER"
+
+    // rootframe.appendChild(officeHeader)
+
 
   }
 
